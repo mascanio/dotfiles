@@ -3,4 +3,6 @@
 eval "$(ssh-agent)"
 alias vim='nvim'
 
-EDITOR=vim
+export VISUAL=vim
+export EDITOR="$VISUAL"
+
