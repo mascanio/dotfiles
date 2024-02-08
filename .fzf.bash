@@ -1,13 +1,13 @@
 # Setup fzf
 # ---------
-if [[ ! "$PATH" == */home/mascanio/.fzf/bin* ]]; then
-  PATH="${PATH:+${PATH}:}/home/mascanio/.fzf/bin"
+if [[ ! "$PATH" == *$HOME/.fzf/bin* ]]; then
+  PATH="${PATH:+${PATH}:}$HOME/.fzf/bin"
 fi
 
 # Auto-completion
 # ---------------
-source "/home/mascanio/.fzf/shell/completion.bash"
+source "$HOME/.fzf/shell/completion.bash"
 
 # Key bindings
 # ------------
-source "/home/mascanio/.fzf/shell/key-bindings.bash"
+source "$HOME/.fzf/shell/key-bindings.bash"
