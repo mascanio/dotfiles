@@ -1,2 +1,2 @@
-require("mascanio.remap")
 require("mascanio.set")
+require("mascanio.remap")
