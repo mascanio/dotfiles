@@ -1,3 +1,5 @@
+vim.g.mapleader = " "
+
 vim.opt.nu = true
 vim.opt.relativenumber = true
 
@@ -24,6 +26,4 @@ vim.opt.signcolumn = "yes"
 vim.opt.updatetime = 50
 
 vim.opt.colorcolumn = "120"
-
-vim.g.mapleader = " "
 
