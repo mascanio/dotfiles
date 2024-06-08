@@ -49,7 +49,7 @@ zinit cdreplay -q
 
 # Keybindings
 bindkey '^y' autosuggest-accept
-bindkey '^ ' autosuggest-execute
+bindkey '^l' autosuggest-execute
 
 # History
 HISTSIZE=50000
@@ -82,3 +82,15 @@ alias la='eza -l --group-directories-first --icons=always -a'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 . "$HOME/.cargo/env"
+
+# fnm
+FNM_PATH="/Users/mascanio/Library/Application Support/fnm"
+if [ -d "$FNM_PATH" ]; then
+  export PATH="/Users/mascanio/Library/Application Support/fnm:$PATH"
+  eval "`fnm env`"
+  eval "$(fnm env --use-on-cd)"
+fi
+
+eval "$(fzf --zsh)"
+
+export PATH="/Users/mascanio/go/bin/:$PATH"
