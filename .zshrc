@@ -1,3 +1,4 @@
+eval "$(ssh-agent)"
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -82,3 +83,12 @@ alias la='eza -l --group-directories-first --icons=always -a'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 . "$HOME/.cargo/env"
+
+# fnm
+FNM_PATH="/home/mascanio/.local/share/fnm"
+if [ -d "$FNM_PATH" ]; then
+  export PATH="/home/mascanio/.local/share/fnm:$PATH"
+  eval "`fnm env`"
+fi
+
+export PATH=$PATH:/usr/local/go/bin
