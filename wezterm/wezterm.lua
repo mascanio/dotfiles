@@ -8,5 +8,10 @@ config.font = wezterm.font("SauceCodePro Nerd Font", {
 	style = "Normal",
 })
 config.color_scheme = "Catppuccin Macchiato"
+config.hide_tab_bar_if_only_one_tab = true
+
+-- hyperlinks
+-- Use the defaults as a base
+config.hyperlink_rules = wezterm.default_hyperlink_rules()
 
 return config
