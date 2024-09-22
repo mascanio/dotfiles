@@ -1,0 +1,83 @@
+#:schema https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json
+
+version = 2
+
+[[blocks]]
+  type = 'prompt'
+  alignment = 'left'
+
+  [[blocks.segments]]
+    type = 'os'
+    style = 'plain'
+    foreground = '#26C6DA'
+    background = '#546E7A'
+    template = ' {{ if .WSL }}WSL at {{ end }}{{.Icon}} '
+
+  [[blocks.segments]]
+    type = 'root'
+    style = 'plain'
+    foreground = '#26C6DA'
+    background = '#546E7A'
+    template = '  '
+
+  [[blocks.segments]]
+    type = 'path'
+    style = 'plain'
+    foreground = '#26C6DA'
+    background = '#546E7A'
+    template = ' {{ .Path }} '
+
+    [blocks.segments.properties]
+      style = 'full'
+
+  [[blocks.segments]]
+    type = 'git'
+    style = 'plain'
+    foreground = '#D4E157'
+    background = '#546E7A'
+    template = '<#26C6DA> </>{{ .HEAD }} '
+
+  [[blocks.segments]]
+    type = 'text'
+    style = 'plain'
+    foreground = '#546E7A'
+    background = 'transparent'
+    template = ''
+
+[[blocks]]
+  type = 'prompt'
+  alignment = 'right'
+
+  [[blocks.segments]]
+    type = 'session'
+    style = 'diamond'
+    foreground = '#D4E157'
+    background = '#546E7A'
+    leading_diamond = ''
+    template = ' {{ .UserName }}@{{ .HostName }} <#26C6DA></> '
+
+  [[blocks.segments]]
+    type = 'time'
+    style = 'plain'
+    foreground = '#D4E157'
+    background = '#546E7A'
+    template = ' {{ .CurrentDate | date .Format }}  '
+
+    [blocks.segments.properties]
+      time_format = '15:04'
+
+[[blocks]]
+  type = 'prompt'
+  alignment = 'left'
+  newline = true
+
+  [[blocks.segments]]
+    type = 'status'
+    style = 'plain'
+    foreground = '#D4E157'
+    foreground_templates = ['{{ if gt .Code 0 }}#FF5252{{ end }}']
+    template = '❯ '
+
+    [blocks.segments.properties]
+      always_enabled = true
+

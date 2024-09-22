@@ -1,0 +1,6 @@
+--target=~/.config
+--ignore=.stowrc
+--ignore=DS_Store
+--ignore=setup.sh
+--ignore=README.md
+--ignore=.config_bc
