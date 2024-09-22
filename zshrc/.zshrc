@@ -5,6 +5,7 @@ fi
 
 if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
   # eval "$(oh-my-posh init zsh)"
+  export PATH=$PATH:/home/mascanio/.local/bin
   eval "$(oh-my-posh init zsh --config ~/.config/ohmyposh/theme.toml)"
 fi
 
@@ -76,14 +77,25 @@ alias la='eza -l --group-directories-first --icons=always -a'
 
 . "$HOME/.cargo/env"
 
-# fnm
-FNM_PATH="/Users/mascanio/Library/Application Support/fnm"
-if [ -d "$FNM_PATH" ]; then
-  export PATH="/Users/mascanio/Library/Application Support/fnm:$PATH"
-  eval "`fnm env`"
-  eval "$(fnm env --use-on-cd)"
+if [[ -f "/opt/homebrew/bin/brew" ]] then
+  # fnm
+  FNM_PATH="/Users/mascanio/Library/Application Support/fnm"
+  if [ -d "$FNM_PATH" ]; then
+    export PATH="/Users/mascanio/Library/Application Support/fnm:$PATH"
+    eval "`fnm env`"
+    eval "$(fnm env --use-on-cd)"
+  fi
+
+  eval "$(fzf --zsh)"
+
+  export PATH="/Users/mascanio/go/bin/:$PATH"
+else
+  # fnm
+  FNM_PATH="/home/mascanio/.local/share/fnm"
+  if [ -d "$FNM_PATH" ]; then
+    export PATH="/home/mascanio/.local/share/fnm:$PATH"
+    eval "`fnm env`"
+  fi
+  export PATH=$PATH:/usr/local/go/bin
+  export PATH=$PATH:/home/mascanio/go/bin
 fi
-
-eval "$(fzf --zsh)"
-
-export PATH="/Users/mascanio/go/bin/:$PATH"
