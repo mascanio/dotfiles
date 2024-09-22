@@ -25,6 +25,7 @@ zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-completions
 
 # Load completions
+fpath=(~/.docker/completions \/Users/mascanio/.local/share/zinit/completions /usr/local/share/zsh/site-functions /usr/share/zsh/site-functions /usr/share/zsh/5.9/functions /Users/mascanio/.local/share/zinit/plugins/zsh-users---zsh-completions/src /Users/mascanio/.local/share/zinit/plugins/Aloxaf---fzf-tab/lib)
 autoload -Uz compinit && compinit
 
 zinit light Aloxaf/fzf-tab
