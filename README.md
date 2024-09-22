@@ -10,8 +10,11 @@ stow . --adopt
 
 * Nvim
 * fzf
-* ripgrep
+* lua luarock
 
+## Rust 
+* ripgrep
+* fd-find
 * EZA https://github.com/eza-community/eza
 
 ## zsh plugins
