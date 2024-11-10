@@ -3,10 +3,13 @@ if [[ -f "/opt/homebrew/bin/brew" ]] then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
+export STARSHIP_CONFIG=~/.config/starship/starship.toml
+
 if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
   # eval "$(oh-my-posh init zsh)"
   export PATH=$PATH:/home/mascanio/.local/bin
-  eval "$(oh-my-posh init zsh --config ~/.config/ohmyposh/theme.toml)"
+  # eval "$(oh-my-posh init zsh --config ~/.config/ohmyposh/theme.toml)"
+  eval "$(starship init zsh)"
 fi
 
 # Set the directory we want to store zinit and plugins

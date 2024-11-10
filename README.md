@@ -27,3 +27,5 @@ https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins
 * https://github.com/zsh-users/zsh-autosuggestions
 * https://github.com/Aloxaf/fzf-tab/wiki/Configuration
 
+## Starship
+https://starship.rs/
