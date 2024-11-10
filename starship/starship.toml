@@ -1,6 +1,6 @@
 add_newline = false
 # A minimal left prompt
-format = """$directory$character"""
+format = """$os$directory$character"""
 palette = "catppuccin_macchiato"
 # move the rest of the prompt to the right
 right_format = """$all"""
@@ -14,10 +14,14 @@ command_timeout = 1000
 format = '[$symbol$branch(:$remote_branch)]($style) '
 truncation_length = 20
 
+[git_commit]
+tag_disabled = false
+
 [git_status]
 ahead = '⇡${count}'
 diverged = '⇕⇡${ahead_count}⇣${behind_count}'
 behind = '⇣${count}'
+stashed = '\$${count}'
 
 [golang]
 symbol = '[ ](cyan)'
