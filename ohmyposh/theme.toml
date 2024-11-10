@@ -1,56 +1,61 @@
-#:schema https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json
-
-version = 2
+version = 3
 final_space = true
+
+[palette]
+  blue = '#8AADF4'
+  closer = 'p:os'
+  lavender = '#B7BDF8'
+  os = '#ACB0BE'
+  pink = '#F5BDE6'
+
+[transient_prompt]
+  template = ''
+  foreground = 'p:closer'
+  background = 'transparent'
 
 [[blocks]]
   type = 'prompt'
   alignment = 'left'
 
   [[blocks.segments]]
+    template = '{{.Icon}} '
+    foreground = 'p:os'
     type = 'os'
     style = 'plain'
-    foreground = 'p:os'
-    template = '{{.Icon}} '
-
-  # [[blocks.segments]]
-  #   type = 'session'
-  #   style = 'plain'
-  #   foreground = 'p:blue'
-  #   template = '{{ .UserName }}@{{ .HostName }} '
-
-  [[blocks.segments]]
-    type = 'path'
-    style = 'plain'
-    foreground = 'p:pink'
-    template = '{{ .Path }} '
 
     [blocks.segments.properties]
-      folder_icon = ''
-      home_icon = ''
-      style = 'powerlevel'
-      max_width = 30
-
-      [blocks.segments.properties.mapped_locations]
-      '~/.config' = ''
-      '~/Program' = ''
+      cache_duration = 'none'
 
   [[blocks.segments]]
+    template = '{{ .Path }} '
+    foreground = 'p:pink'
+    type = 'path'
+    style = 'plain'
+
+    [blocks.segments.properties]
+      cache_duration = 'none'
+      folder_icon = ''
+      home_icon = ''
+      max_width = 30
+      style = 'powerlevel'
+
+      [blocks.segments.properties.mapped_locations]
+        '~/.config' = ''
+        '~/Program' = ''
+
+  [[blocks.segments]]
+    template = '{{ .UpstreamIcon }}{{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }}  {{ .Working.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Staging.Changed }}  {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0 }}  {{ .StashCount }}{{ end }}'
+    foreground = 'p:lavender'
     type = 'git'
     style = 'plain'
-    foreground = 'p:lavender'
-#template = '{{ .HEAD }} '
-    template = "{{ .UpstreamIcon }}{{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }}  {{ .Working.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Staging.Changed }}  {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0 }}  {{ .StashCount }}{{ end }}"
-
-#template = "{{ .HEAD }} {{ .BranchStatus }}{{ if .Working.Changed }} \uF044 {{ .Working.String }}{{ end }}{{ if and (.Staging.Changed) (.Working.Changed) }} |{{ end }}{{ if .Staging.Changed }} \uF046 {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0}} \uF692 {{ .StashCount }}{{ end }}{{ if gt .WorktreeCount 0}} \uf1bb {{ .WorktreeCount }}{{ end }}"
-
 
     [blocks.segments.properties]
       branch_icon = ' '
+      cache_duration = 'none'
       cherry_pick_icon = ' '
       commit_icon = ' '
-      fetch_status = true 
-      fetch_upstream_icon = true 
+      fetch_status = true
+      fetch_upstream_icon = true
       merge_icon = ' '
       no_commits_icon = ' '
       rebase_icon = ' '
@@ -63,20 +68,11 @@ final_space = true
   newline = true
 
   [[blocks.segments]]
+    template = ''
+    foreground = 'p:closer'
     type = 'text'
     style = 'plain'
-    foreground = 'p:closer'
     foreground_templates = ['{{ if gt .Code 0 }}#FF5252{{ end }}']
-    template = ''
 
-[transient_prompt]
-  foreground = 'p:closer'
-  background = 'transparent'
-  template = ''
-
-[palette]
-  blue = '#8AADF4'
-  closer = 'p:os'
-  lavender = '#B7BDF8'
-  os = '#ACB0BE'
-  pink = '#F5BDE6'
+    [blocks.segments.properties]
+      cache_duration = 'none'
