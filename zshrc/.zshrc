@@ -4,9 +4,7 @@ if [[ -f "/opt/homebrew/bin/brew" ]] then
 fi
 
 if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
-  # eval "$(oh-my-posh init zsh)"
   export PATH=$PATH:/home/mascanio/.local/bin
-  # eval "$(oh-my-posh init zsh --config ~/.config/ohmyposh/theme.toml)"
 fi
 
 export STARSHIP_CONFIG=~/.config/starship/starship.toml
@@ -92,6 +90,7 @@ if [[ -f "/opt/homebrew/bin/brew" ]] then
   eval "$(fzf --zsh)"
 
   export PATH="/Users/mascanio/go/bin/:$PATH"
+  export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
 else
   # fnm
   FNM_PATH="/home/mascanio/.local/share/fnm"
@@ -103,4 +102,3 @@ else
   export PATH=$PATH:/home/mascanio/go/bin
 fi
 
-export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"

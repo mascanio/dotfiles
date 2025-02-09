@@ -4,3 +4,4 @@
 --ignore=setup.sh
 --ignore=README.md
 --ignore=.config_bc
+--ignore=old
