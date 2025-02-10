@@ -90,7 +90,15 @@ if [[ -f "/opt/homebrew/bin/brew" ]] then
   eval "$(fzf --zsh)"
 
   export PATH="/Users/mascanio/go/bin/:$PATH"
+  # Java
   export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
+  # Ruby
+  export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+  export PATH="/opt/homebrew/lib/ruby/gems/3.4.0/bin:$PATH"
+  export LDFLAGS="-L/opt/homebrew/opt/ruby/lib"
+  export CPPFLAGS="-I/opt/homebrew/opt/ruby/include"
+  # Perl
+  eval "$(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib=$HOME/perl5)"
 else
   # fnm
   FNM_PATH="/home/mascanio/.local/share/fnm"
