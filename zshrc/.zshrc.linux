@@ -1,12 +1,4 @@
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-if [[ -f "/opt/homebrew/bin/brew" ]] then
-  # If you're using macOS, you'll want this enabled
-  eval "$(/opt/homebrew/bin/brew shellenv)"
-fi
-
-if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
-  export PATH=$PATH:/home/mascanio/.local/bin
-fi
 
 export STARSHIP_CONFIG=~/.config/starship/starship.toml
 eval "$(starship init zsh)"
@@ -26,14 +18,19 @@ source "${ZINIT_HOME}/zinit.zsh"
 # Add in zsh plugins
 zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-completions
+zinit light Aloxaf/fzf-tab
+zinit light zsh-users/zsh-autosuggestions
+
+export fpath=(/usr/local/share/zsh/site-functions /usr/share/zsh/site-functions ${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/plugins/Aloxaf---fzf-tab/lib $fpath)
 
 # Load completions
 export fpath=(${HOMEBREW_PREFIX}/share/zsh-completions $fpath)
-#fpath=(~/.docker/completions \/Users/mascanio/.local/share/zinit/completions /usr/local/share/zsh/site-functions /usr/share/zsh/site-functions /usr/share/zsh/5.9/functions /Users/mascanio/.local/share/zinit/plugins/zsh-users---zsh-completions/src /Users/mascanio/.local/share/zinit/plugins/Aloxaf---fzf-tab/lib)
-autoload -Uz compinit && compinit
+export fpath=(${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/completions $fpath)
+export fpath=(${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/plugins/zsh-users---zsh-completions/src $fpath)
+export fpath=(~/.docker/completions $fpath)
+export fpath=(~/.zsh/completions $fpath)
 
-zinit light Aloxaf/fzf-tab
-zinit light zsh-users/zsh-autosuggestions
+autoload -Uz compinit && compinit -u
 
 # Add in snippets
 zinit snippet OMZP::git
@@ -80,43 +77,38 @@ alias la='eza -l --group-directories-first --icons=always -a'
 
 . "$HOME/.cargo/env"
 
-if [[ -f "/opt/homebrew/bin/brew" ]] then
-  # fnm
-  FNM_PATH="/Users/mascanio/Library/Application Support/fnm"
-  if [ -d "$FNM_PATH" ]; then
-    export PATH="/Users/mascanio/Library/Application Support/fnm:$PATH"
-    eval "`fnm env`"
-    eval "$(fnm env --use-on-cd)"
-  fi
+# if [[ -f "/opt/homebrew/bin/brew" ]] then
+#   # fnm
+#   FNM_PATH="/Users/mascanio/Library/Application Support/fnm"
+#   if [ -d "$FNM_PATH" ]; then
+#     export PATH="/Users/mascanio/Library/Application Support/fnm:$PATH"
+#     eval "`fnm env`"
+#     eval "$(fnm env --use-on-cd)"
+#   fi
+#
+#   eval "$(fzf --zsh)"
+#
+#   export PATH="/Users/mascanio/go/bin/:$PATH"
+#   # Java
+#   export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
+#   # Ruby
+#   export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+#   export PATH="/opt/homebrew/lib/ruby/gems/3.4.0/bin:$PATH"
+#   export LDFLAGS="-L/opt/homebrew/opt/ruby/lib"
+#   export CPPFLAGS="-I/opt/homebrew/opt/ruby/include"
+#   # Perl
+#   eval "$(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib=$HOME/perl5)"
 
-  eval "$(fzf --zsh)"
-
-  export PATH="/Users/mascanio/go/bin/:$PATH"
-  # Java
-  export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
-  # Ruby
-  export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
-  export PATH="/opt/homebrew/lib/ruby/gems/3.4.0/bin:$PATH"
-  export LDFLAGS="-L/opt/homebrew/opt/ruby/lib"
-  export CPPFLAGS="-I/opt/homebrew/opt/ruby/include"
-  # Perl
-  eval "$(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib=$HOME/perl5)"
-else
-  # fnm
-  FNM_PATH="/home/mascanio/.local/share/fnm"
-  if [ -d "$FNM_PATH" ]; then
-    export PATH="/home/mascanio/.local/share/fnm:$PATH"
-    eval "`fnm env`"
-  fi
-  export PATH=$PATH:/usr/local/go/bin
-  export PATH=$PATH:/home/mascanio/go/bin
+# fnm
+FNM_PATH="/home/mascanio/.local/share/fnm"
+if [ -d "$FNM_PATH" ]; then
+  export PATH="/home/mascanio/.local/share/fnm:$PATH"
+  eval "`fnm env`"
+  eval "$(fnm env --use-on-cd --shell zsh)"
 fi
 
-# The following lines have been added by Docker Desktop to enable Docker CLI completions.
-fpath=(/Users/mascanio/.docker/completions $fpath)
-autoload -Uz compinit
-compinit
-# End of Docker CLI completions
+export PATH=$PATH:/usr/local/go/bin
+export PATH=$PATH:/home/mascanio/go/bin
 
 # opencode
-export PATH=/Users/mascanio/.opencode/bin:$PATH
+export PATH=/home/mascanio/.opencode/bin:$PATH
