@@ -1,5 +1,3 @@
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-
 export STARSHIP_CONFIG=~/.config/starship/starship.toml
 eval "$(starship init zsh)"
 
@@ -24,7 +22,6 @@ zinit light zsh-users/zsh-autosuggestions
 export fpath=(/usr/local/share/zsh/site-functions /usr/share/zsh/site-functions ${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/plugins/Aloxaf---fzf-tab/lib $fpath)
 
 # Load completions
-export fpath=(${HOMEBREW_PREFIX}/share/zsh-completions $fpath)
 export fpath=(${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/completions $fpath)
 export fpath=(${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/plugins/zsh-users---zsh-completions/src $fpath)
 export fpath=(~/.docker/completions $fpath)
@@ -75,7 +72,10 @@ alias la='eza -l --group-directories-first --icons=always -a'
 # Set up fzf key bindings and fuzzy completion
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-. "$HOME/.cargo/env"
+export FZF_BASE=/usr/share/fzf
+if [ -d "$HOME/.cargo/env" ]; then
+  . "$HOME/.cargo/env"
+fi
 
 # if [[ -f "/opt/homebrew/bin/brew" ]] then
 #   # fnm
