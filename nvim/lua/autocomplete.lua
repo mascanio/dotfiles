@@ -1,82 +1,39 @@
-local gh = function(x) return 'https://github.com/' .. x end
-vim.pack.add({
-  gh('hrsh7th/cmp-nvim-lsp'),
-  gh('hrsh7th/cmp-buffer'),
-  gh('hrsh7th/cmp-path'),
-  gh('hrsh7th/cmp-cmdline'),
-  gh('hrsh7th/nvim-cmp'),
-  --
-  gh('hrsh7th/cmp-vsnip'),
-  gh('hrsh7th/vim-vsnip'),
+-- blink.cmp configuration
+-- https://cmp.saghen.dev/
+
+require("blink.cmp").setup({
+  keymap = {
+    preset = "default",
+    ["<Tab>"]   = { "select_next", "snippet_forward", "fallback" },
+    ["<S-Tab>"] = { "select_prev", "snippet_backward", "fallback" },
+    ["<CR>"]    = { "accept", "fallback" },
+  },
+
+  appearance = {
+    use_nvim_cmp_as_default = false,
+    nerd_font_variant = "mono",
+  },
+
+  completion = {
+    documentation = { auto_show = true, auto_show_delay_ms = 500 },
+  },
+
+  sources = {
+    default = { "lsp", "path", "snippets", "buffer" },
+  },
+
+-- Pass blink capabilities to every LSP via the new vim.lsp.config API
+
 })
 
-vim.opt.completeopt = { "menu", "menuone", "noselect" }
-local has_words_before = function()
-  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
-end
-
-local feedkey = function(key, mode)
-  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
-end
-
-
-local cmp = require('cmp')
-
-cmp.setup({
-  snippet = {
-    expand = function(args)
-      vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
-    end,
-  },
-  mapping = {
-    ['<CR>'] = cmp.mapping.confirm({ select = false }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-    ["<Tab>"] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      elseif vim.fn["vsnip#available"](1) == 1 then
-        feedkey("<Plug>(vsnip-expand-or-jump)", "")
-      elseif has_words_before() then
-        cmp.complete()
-      else
-        fallback() -- The fallback function sends a already mapped key. In this case, it's probably `<Tab>`.
-      end
-    end, { "i", "s" }),
-    ["<S-Tab>"] = cmp.mapping(function()
-      if cmp.visible() then
-        cmp.select_prev_item()
-      elseif vim.fn["vsnip#jumpable"](-1) == 1 then
-        feedkey("<Plug>(vsnip-jump-prev)", "")
-      end
-    end, { "i", "s" }),
-  },
-  sources = cmp.config.sources({
-    { name = 'nvim_lsp' },
-    { name = 'vsnip' }, -- For vsnip users.
-  }, {
-    { name = 'buffer' },
-  })
+-- Expose blink capabilities so lsp/init.lua can pick them up
+vim.lsp.config("*", {
+  capabilities = require("blink.cmp").get_lsp_capabilities(),
 })
 
-
-local capabilities = require('cmp_nvim_lsp').default_capabilities() --nvim-cmp
-
--- local on_attach = function(client, bufnr)
---   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
---   local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
---
---   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
--- end
-
--- Setup lspconfig.
-local nvim_lsp = require('lspconfig')
-
--- setup languages 
--- GoLang
-nvim_lsp['gopls'].setup{
-  cmd = {'gopls'},
-  -- on_attach = on_attach,
-  capabilities = capabilities,
+-- GoLang LSP extra settings (capabilities already set via vim.lsp.config("*", ...) above)
+vim.lsp.config("gopls", {
+  cmd = { "gopls" },
   settings = {
     gopls = {
       experimentalPostfixCompletions = true,
@@ -89,5 +46,5 @@ nvim_lsp['gopls'].setup{
   },
   init_options = {
     usePlaceholders = true,
-  }
-}
+  },
+})

@@ -1,3 +1,4 @@
+-- ─── Options ─────────────────────────────────────────────────────────────────
 local o = vim.opt
 o.tabstop = 2
 o.shiftwidth = 2
@@ -24,11 +25,13 @@ o.foldlevelstart = 99
 o.relativenumber = true
 o.number = true
 o.termguicolors = true
+o.clipboard = "unnamedplus"
 
-local g = vim.g
-g.mapleader = " "
-g.maplocalleader = " "
+-- ─── Leader ───────────────────────────────────────────────────────────────────
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 
+-- ─── Keymaps ─────────────────────────────────────────────────────────────────
 local opts = { silent = true }
 local map = vim.keymap.set
 map("t", "<Esc>", [[<C-\><C-n>]], opts) -- exit terminal mode
@@ -54,24 +57,7 @@ end)
 
 map("i", "jj", "<Esc>", { noremap = false })
 
--- map("n", "<leader>r", function() -- toggle lsp loclist
---   local loclist_win = vim.fn.getloclist(0, { winid = 0 }).winid
---   if loclist_win > 0 then
---     vim.cmd("lclose")
---   else
---     vim.diagnostic.setloclist({ open = true })
---   end
--- end, opts)
--- map("n", "<leader>s", function() -- toggle quickfix
---   for _, win in ipairs(vim.fn.getwininfo()) do
---     if win.quickfix == 1 then
---       vim.cmd("cclose")
---       return
---     end
---   end
---   vim.cmd("copen")
--- end)
-
+-- ─── Autocmds ────────────────────────────────────────────────────────────────
 local augroup = vim.api.nvim_create_augroup("erock.cfg", { clear = true })
 local autocmd = vim.api.nvim_create_autocmd
 autocmd("Filetype", { group = augroup, pattern = "make", command = "setlocal noexpandtab tabstop=4 shiftwidth=4" })
@@ -81,149 +67,213 @@ autocmd("BufEnter", { -- disable automatic newline comment continuation
   end,
 })
 
--- Vim pack update hooks
-local hooks = function(ev)
-  -- Use available |event-data|
-  local name, kind = ev.data.spec.name, ev.data.kind
-  -- Run build script after plugin's code has changed
-  if name == 'telescope-fzf-native.nvim' and (kind == 'install' or kind == 'update') then
-    print('compiling telescope-fzf')
-    local obj = vim.system(
-      { 'make' },
-      {
-        cwd = ev.data.path,
-        env = { CFLAGS = '-march=native' },
-      }
-    ):wait()
-    print(obj.stdout)
-    print(obj.stderr)
-    if obj.code ~= 0 then
-      print("Error compiling, see :messages")
-      error(obj.stderr)
-    end
-  end
-  -- If action relies on code from the plugin (like user command or
-  -- Lua code), make sure to explicitly load it first
-  if name == 'nvim-treesitter' and (kind == 'install' or kind == 'update') then
-    if not ev.data.active then
-      vim.cmd.packadd('nvim-treesitter')
-    end
-    require('nvim-treesitter').update(nil, { summary = true })
-  end
+-- ─── lazy.nvim bootstrap ─────────────────────────────────────────────────────
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.uv.fs_stat(lazypath) then
+  vim.fn.system({
+    "git", "clone", "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable",
+    lazypath,
+  })
 end
--- If hooks need to run on install, run this before `vim.pack.add()`
--- To act on install from lockfile, run before very first `vim.pack.add()`
-autocmd('PackChanged', { callback = hooks })
+vim.opt.rtp:prepend(lazypath)
 
-local gh = function(x) return 'https://github.com/' .. x end
-vim.pack.add({
-  gh("nvim-lua/plenary.nvim"),
-  gh("MunifTanjim/nui.nvim"),
-  gh("nvim-tree/nvim-web-devicons"),
-  gh("s1n7ax/nvim-window-picker"),
-  gh("rcarriga/nvim-notify"),
+-- ─── Plugins ─────────────────────────────────────────────────────────────────
+require("lazy").setup({
 
-  gh("catppuccin/nvim"),
-  gh("neovim/nvim-lspconfig"),
-  gh("stevearc/conform.nvim"),
-  gh("kdheepak/lazygit.nvim"),
-  gh("linrongbin16/gitlinker.nvim"),
-  gh("sindrets/diffview.nvim"),
-  gh("nvim-mini/mini.pairs"),
-  gh("folke/ts-comments.nvim"),
-  gh("folke/todo-comments.nvim"),
-  gh('neovim/nvim-lspconfig'),
-  -- TS
-  gh("nvim-treesitter/nvim-treesitter"),
-  -- Telescope
-  gh("nvim-telescope/telescope.nvim"),
-  gh("nvim-telescope/telescope-fzf-native.nvim"),
-  -- Neotree
+  -- ── Dependencies ────────────────────────────────────────────────────────
+  { "nvim-lua/plenary.nvim",        lazy = true },
+  { "MunifTanjim/nui.nvim",         lazy = true },
+  { "nvim-tree/nvim-web-devicons",  lazy = true },
+  { "s1n7ax/nvim-window-picker",    lazy = true, config = true },
+  { "rcarriga/nvim-notify",         lazy = true },
+  { "ray-x/guihua.lua",             lazy = true },
+
+  -- ── Colorscheme ─────────────────────────────────────────────────────────
   {
-    src = gh("nvim-neo-tree/neo-tree.nvim"),
-    version = vim.version.range('3')
+    "catppuccin/nvim",
+    name = "catppuccin",
+    priority = 1000,
+    config = function()
+      require("catppuccin").setup({
+        flavour = "macchiato",
+        auto_integrations = false,
+      })
+      vim.cmd.colorscheme("catppuccin")
+    end,
   },
-  -- Noice
-  gh("folke/noice.nvim"),
 
-  gh("nvim-lualine/lualine.nvim"),
-
-  gh("folke/snacks.nvim"),
-
-  -- Go
-  gh('ray-x/go.nvim'),
-  gh('ray-x/guihua.lua'),
-})
-
-require('snacks').setup({
-  bigfile = { enabled = true },
-  dashboard = { enabled = true },
-  -- explorer = { enabled = true },
-  indent = {
-    enabled = true,
-    animate = { enabled = false },
+  -- ── LSP ─────────────────────────────────────────────────────────────────
+  {
+    "neovim/nvim-lspconfig",
+    config = function()
+      require("lsp")
+    end,
   },
-  input = { enabled = true },
-  notifier = {
-    enabled = true,
-    timeout = 3000,
+
+  -- ── Completion (blink.cmp) ───────────────────────────────────────────────
+  {
+    "saghen/blink.cmp",
+    version = "1.*",
+    config = function()
+      require("autocomplete")
+    end,
   },
-  -- picker = { enabled = true },
-  -- quickfile = { enabled = true },
-  scope = { enabled = true },
-  -- scroll = { enabled = true },
-  statuscolumn = { enabled = true },
-  words = { enabled = true },
-  styles = {
-    notification = {
-      -- wo = { wrap = true } -- Wrap notifications
+
+  -- ── Formatter ───────────────────────────────────────────────────────────
+  {
+    "stevearc/conform.nvim",
+    event = "BufWritePre",
+    config = function()
+      require("formatter")
+    end,
+  },
+
+  -- ── Git ─────────────────────────────────────────────────────────────────
+  {
+    "kdheepak/lazygit.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+  },
+  {
+    "linrongbin16/gitlinker.nvim",
+    config = function()
+      require("gitlinker").setup()
+    end,
+  },
+  {
+    "sindrets/diffview.nvim",
+    config = function()
+      require("diffview").setup({ use_icons = false })
+    end,
+  },
+
+  -- ── Editing ─────────────────────────────────────────────────────────────
+  { "nvim-mini/mini.pairs" },
+  { "folke/ts-comments.nvim",    opts = {} },
+  { "folke/todo-comments.nvim",  dependencies = { "nvim-lua/plenary.nvim" }, opts = {} },
+
+  -- ── Treesitter ──────────────────────────────────────────────────────────
+  {
+    "nvim-treesitter/nvim-treesitter",
+    build = function()
+      require("nvim-treesitter").update(nil, { summary = true })
+    end,
+    config = function()
+      require("treesitter")
+    end,
+  },
+
+  -- ── Telescope ───────────────────────────────────────────────────────────
+  {
+    "nvim-telescope/telescope.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      {
+        "nvim-telescope/telescope-fzf-native.nvim",
+        build = function(plugin)
+          vim.system({ "make" }, { cwd = plugin.dir, env = { CFLAGS = "-march=native" } }):wait()
+        end,
+      },
+      "folke/noice.nvim", -- needed so noice is set up before telescope loads its extension
+    },
+    config = function()
+      require("telescope").load_extension("fzf")
+      require("telescope").load_extension("noice")
+      local telescope = require("telescope.builtin")
+      map("n", "<leader>ff",    telescope.find_files, { desc = "Telescope find files" })
+      map("n", "<leader><space>", telescope.find_files, { desc = "Telescope find files" })
+      map("n", "<leader>fg",    telescope.live_grep,  { desc = "Telescope live grep" })
+      map("n", "<leader>fb",    telescope.buffers,    { desc = "Telescope buffers" })
+      map("n", "<leader>fh",    telescope.help_tags,  { desc = "Telescope help tags" })
+    end,
+  },
+
+  -- ── File explorer ────────────────────────────────────────────────────────
+  {
+    "nvim-neo-tree/neo-tree.nvim",
+    version = "^3",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-tree/nvim-web-devicons",
+      "MunifTanjim/nui.nvim",
+      "s1n7ax/nvim-window-picker",
     },
   },
+
+  -- ── UI ───────────────────────────────────────────────────────────────────
+  {
+    "folke/noice.nvim",
+    dependencies = { "MunifTanjim/nui.nvim", "rcarriga/nvim-notify" },
+    config = function()
+      require("noice").setup({
+        lsp = {
+          override = {
+            ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+            ["vim.lsp.util.stylize_markdown"] = true,
+          },
+        },
+        routes = {
+          {
+            filter = {
+              event = "msg_show",
+              any = {
+                { find = "%d+L, %d+B" },
+                { find = "; after #%d+" },
+                { find = "; before #%d+" },
+              },
+            },
+            view = "mini",
+          },
+        },
+        presets = {
+          bottom_search = true,
+          command_palette = true,
+          long_message_to_split = true,
+        },
+      })
+    end,
+  },
+  {
+    "nvim-lualine/lualine.nvim",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = function()
+      require("lualine").setup({})
+    end,
+  },
+  {
+    "folke/snacks.nvim",
+    priority = 1000,
+    lazy = false,
+    config = function()
+      require("snacks").setup({
+        bigfile    = { enabled = true },
+        dashboard  = { enabled = true },
+        indent     = { enabled = true, animate = { enabled = false } },
+        input      = { enabled = true },
+        notifier   = { enabled = true, timeout = 3000 },
+        scope      = { enabled = true },
+        statuscolumn = { enabled = true },
+        words      = { enabled = true },
+        styles     = { notification = {} },
+      })
+    end,
+  },
+
+  -- ── Go ───────────────────────────────────────────────────────────────────
+  {
+    "ray-x/go.nvim",
+    dependencies = { "ray-x/guihua.lua", "neovim/nvim-lspconfig" },
+    config = function()
+      require("go").setup({})
+    end,
+    ft = { "go", "gomod", "gowork", "gotmpl" },
+  },
+
+}, {
+  -- lazy.nvim options
+  ui = { border = "rounded" },
 })
 
-
--- require("vim._extui").enable({}) -- https://github.com/neovim/neovim/pull/27855
-require("gitlinker").setup()
-require("diffview").setup({ use_icons = false })
-
--- TELESCOPE
-require('telescope').load_extension('fzf')
-require("telescope").load_extension("noice")
-local telescope = require('telescope.builtin')
-
-map('n', '<leader>ff', telescope.find_files, { desc = 'Telescope find files' })
-map('n', '<leader><space>', telescope.find_files, { desc = 'Telescope find files' })
-map('n', '<leader>fg', telescope.live_grep, { desc = 'Telescope live grep' })
-map('n', '<leader>fb', telescope.buffers, { desc = 'Telescope buffers' })
-map('n', '<leader>fh', telescope.help_tags, { desc = 'Telescope help tags' })
-
--- window picker
-require("window-picker").setup()
-
--- DISABLED
--- "https://github.com/tpope/vim-fugitive",
-
--- "https://github.com/karb94/neoscroll.nvim",
--- require("neoscroll").setup({ duration_multiplier = 0.3 })
-
--- "https://github.com/nvim-mini/mini.pick",
--- "https://github.com/nvim-mini/mini.files",
--- map("n", "<leader>f", "<cmd>Pick files<cr>")
--- map("n", "<leader>g", "<cmd>Pick grep_live<cr>")
--- map("n", "<leader>a", "<cmd>lua MiniFiles.open()<cr>")
--- require("mini.pick").setup()
--- require("mini.files").setup()
-
-require("catppuccin").setup({
-  flavour = "macchiato", -- latte, frappe, macchiato, mocha
-  auto_integrations = false,
-})
-vim.cmd.colorscheme "catppuccin"
-
-require('lualine').setup {}
-require('treesitter')
-require('lsp')
-require('autocomplete')
-require('ui')
-
-require('go').setup({})
+-- ─── Post-plugin setup that depends on several plugins ───────────────────────
+require("ui")

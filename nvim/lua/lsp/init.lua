@@ -11,6 +11,56 @@ vim.diagnostic.config({
   severity_sort = true,
 })
 
+-- ─── Python ──────────────────────────────────────────────────────────────────
+vim.lsp.config('pyright', {
+  settings = {
+    python = {
+      analysis = {
+        autoSearchPaths = true,
+        useLibraryCodeForTypes = true,
+        diagnosticMode = 'openFilesOnly',
+      },
+    },
+  },
+})
+vim.lsp.enable('pyright')
+
+-- ruff: fast linter + formatter (replaces pyright's formatting)
+vim.lsp.config('ruff', {
+  init_options = {
+    settings = {
+      -- ruff CLI args can go here, e.g.: args = { '--select', 'ALL' }
+    },
+  },
+})
+vim.lsp.enable('ruff')
+
+-- ─── Docker ──────────────────────────────────────────────────────────────────
+vim.lsp.enable('dockerls')
+
+-- docker-compose files use filetype 'yaml.docker-compose'
+vim.lsp.enable('docker_compose_language_service')
+
+-- ─── JSON ─────────────────────────────────────────────────────────────────────
+vim.lsp.enable('jsonls')
+
+-- ─── YAML ─────────────────────────────────────────────────────────────────────
+vim.lsp.config('yamlls', {
+  settings = {
+    yaml = {
+      format = { enable = true },
+      validate = true,
+      schemaStore = { enable = true, url = 'https://www.schemastore.org/api/json/catalog.json' },
+    },
+    redhat = { telemetry = { enabled = false } },
+  },
+})
+vim.lsp.enable('yamlls')
+
+-- ─── Markdown ────────────────────────────────────────────────────────────────
+vim.lsp.enable('marksman')
+
+-- ─── Lua ─────────────────────────────────────────────────────────────────────
 vim.lsp.config('lua_ls', {
   on_init = function(client)
     if client.workspace_folders then
