@@ -1,11 +1,21 @@
 return {
   "saghen/blink.cmp",
   version = "1.*",
+  build = 'cargo build --release',
+  dependencies = {
+    "rafamadriz/friendly-snippets",
+    "saghen/blink.compat",
+  },
+
   opts = {
     keymap = {
-      preset = "default",
+      preset      = "default",
       ["<Tab>"]   = { "select_next", "snippet_forward", "fallback" },
       ["<S-Tab>"] = { "select_prev", "snippet_backward", "fallback" },
+      ['<C-k>']   = { 'select_prev', 'fallback_to_mappings' },
+      ['<C-j>']   = { 'select_next', 'fallback_to_mappings' },
+      ['<C-h>']   = { 'show_signature', 'hide_signature', 'fallback' },
+
       ["<CR>"]    = { "accept", "fallback" },
     },
     appearance = {

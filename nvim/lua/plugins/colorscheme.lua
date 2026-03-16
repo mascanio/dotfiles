@@ -4,7 +4,7 @@ return {
   priority = 1000,
   opts = {
     flavour = "macchiato",
-    auto_integrations = false,
+    auto_integrations = true,
   },
   config = function(_, opts)
     require("catppuccin").setup(opts)
