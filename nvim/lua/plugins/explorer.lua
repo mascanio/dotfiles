@@ -111,6 +111,7 @@ return {
       "nvim-lua/plenary.nvim",
       "nvim-neo-tree/neo-tree.nvim", -- makes sure that this loads after Neo-tree.
     },
+    opts = {},
   },
   {
     "s1n7ax/nvim-window-picker",

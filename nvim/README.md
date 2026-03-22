@@ -121,8 +121,7 @@ chmod +x ~/.local/bin/marksman
 | `lua_ls` | LSP (types, completion, diagnostics) |
 
 ```sh
-# via Mason (inside nvim): :MasonInstall lua-language-server
-# or manually (Arch)
+# Arch
 sudo pacman -S lua-language-server
 # or download from https://github.com/LuaLS/lua-language-server/releases
 ```
