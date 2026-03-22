@@ -31,6 +31,15 @@ return {
         -- ── Code actions ───────────────────────────────────────────────────
         map({ "n", "x" }, "<leader>ca", vim.lsp.buf.code_action, "Code Action")
         map("n", "<leader>cr", vim.lsp.buf.rename, "Rename")
+        map("n", "<leader>cA", function()
+          vim.lsp.buf.code_action({ context = { only = { "source" }, diagnostics = {} } })
+        end, "Source Action")
+        map("n", "<leader>co", function()
+          vim.lsp.buf.code_action({
+            apply = true,
+            context = { only = { "source.organizeImports" }, diagnostics = {} },
+          })
+        end, "Organize Imports")
         if Snacks and Snacks.rename then
           map("n", "<leader>cR", function() Snacks.rename.rename_file() end, "Rename File")
         end
@@ -65,6 +74,12 @@ return {
         if client:supports_method("textDocument/documentHighlight") and Snacks and Snacks.words then
           map("n", "]]", function() Snacks.words.jump(vim.v.count1) end, "Next Reference")
           map("n", "[[", function() Snacks.words.jump(-vim.v.count1) end, "Prev Reference")
+        end
+
+        -- ── LSP folding ────────────────────────────────────────────────────
+        if client:supports_method("textDocument/foldingRange") then
+          vim.wo[0][0].foldmethod = "expr"
+          vim.wo[0][0].foldexpr = "v:lua.vim.lsp.foldexpr()"
         end
       end,
     })

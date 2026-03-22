@@ -44,6 +44,7 @@ return {
       indent        = { enabled = true, animate = { enabled = false } },
       input         = { enabled = true },
       notifier      = { enabled = true, timeout = 3000 },
+      picker        = { enabled = true },
       scope         = { enabled = true },
       statuscolumn  = { enabled = true },
       words         = { enabled = true },

@@ -56,6 +56,13 @@ end)
 
 map("i", "jj", "<Esc>", { noremap = false })
 
+-- Remove Neovim 0.11+ built-in LSP keymaps (gr*) — we set our own in lua/plugins/lsp.lua
+vim.keymap.del("n", "grn")
+vim.keymap.del({ "n", "x" }, "gra")
+vim.keymap.del("n", "grr")
+vim.keymap.del("n", "gri")
+vim.keymap.del("n", "grt")
+
 -- ─── Autocmds ────────────────────────────────────────────────────────────────
 local augroup = vim.api.nvim_create_augroup("erock.cfg", { clear = true })
 local autocmd = vim.api.nvim_create_autocmd
