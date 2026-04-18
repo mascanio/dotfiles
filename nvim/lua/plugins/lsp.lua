@@ -49,6 +49,9 @@ return {
         ruff = {
           -- cmd = { "/path/to/ruff", "server" },
         },
+        bashls = {
+          -- cmd = { "/path/to/bash-language-server", "start" },
+        },
       },
     },
   },
