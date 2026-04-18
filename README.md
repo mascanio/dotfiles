@@ -33,3 +33,4 @@ stow . --adopt
 ## Themes
 
 https://github.com/catppuccin/atuin
+https://github.com/catppuccin/bat
