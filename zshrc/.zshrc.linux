@@ -113,3 +113,6 @@ export PATH=$PATH:/home/mascanio/go/bin
 
 # opencode
 export PATH=/home/mascanio/.opencode/bin:$PATH
+
+eval "$(zoxide init zsh)"
+eval "$(atuin init zsh)"

@@ -14,6 +14,7 @@ stow . --adopt
 * ripgrep
 * fd-find
 * EZA <https://github.com/eza-community/eza>
+* https://docs.atuin.sh/cli/guide/installation/#__tabbed_2_1
 
 ## zsh plugins
 
@@ -28,3 +29,7 @@ stow . --adopt
 ## Starship
 
 <https://starship.rs/>
+
+## Themes
+
+https://github.com/catppuccin/atuin
