@@ -1,4 +1,3 @@
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 if [[ -f "/opt/homebrew/bin/brew" ]] then
   # If you're using macOS, you'll want this enabled
   eval "$(/opt/homebrew/bin/brew shellenv)"
@@ -28,8 +27,7 @@ zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-completions
 
 # Load completions
-export fpath=(${HOMEBREW_PREFIX}/share/zsh-completions $fpath)
-#fpath=(~/.docker/completions \/Users/mascanio/.local/share/zinit/completions /usr/local/share/zsh/site-functions /usr/share/zsh/site-functions /usr/share/zsh/5.9/functions /Users/mascanio/.local/share/zinit/plugins/zsh-users---zsh-completions/src /Users/mascanio/.local/share/zinit/plugins/Aloxaf---fzf-tab/lib)
+fpath=(~/.docker/completions \/Users/mascanio/.local/share/zinit/completions /usr/local/share/zsh/site-functions /usr/share/zsh/site-functions /usr/share/zsh/5.9/functions /Users/mascanio/.local/share/zinit/plugins/zsh-users---zsh-completions/src /Users/mascanio/.local/share/zinit/plugins/Aloxaf---fzf-tab/lib)
 autoload -Uz compinit && compinit
 
 zinit light Aloxaf/fzf-tab
