@@ -64,10 +64,14 @@ zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
 
 # Aliases
 alias vim='nvim'
+alias v='nvim'
 alias ll='eza -l --group-directories-first --icons=always'
 alias ls='eza -l --group-directories-first --icons=always --no-user --no-permissions'
 alias l='eza --group-directories-first --icons=always'
 alias la='eza -l --group-directories-first --icons=always -a'
+
+alias gdl='DELTA_FEATURES=+side-by-side gd'
+alias gdls='DELTA_FEATURES=+side-by-side gds'
 
 # Shell integrations
 # Set up fzf key bindings and fuzzy completion
@@ -116,3 +120,5 @@ export PATH=/home/mascanio/.opencode/bin:$PATH
 
 eval "$(zoxide init zsh)"
 eval "$(atuin init zsh)"
+
+export EDITOR=nvim
