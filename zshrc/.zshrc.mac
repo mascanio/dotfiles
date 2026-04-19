@@ -1,0 +1,32 @@
+# vim: set ft=zsh:
+
+if [[ "$1" == "pre" ]]; then
+  # Homebrew (must be early for PATH)
+  if [[ -f "/opt/homebrew/bin/brew" ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+  fi
+fi
+
+if [[ "$1" == "post" ]]; then
+  # fnm
+  FNM_PATH="$HOME/Library/Application Support/fnm"
+  if [ -d "$FNM_PATH" ]; then
+    export PATH="$FNM_PATH:$PATH"
+    eval "$(fnm env)"
+    eval "$(fnm env --use-on-cd)"
+  fi
+
+  eval "$(fzf --zsh)"
+
+  # Go
+  export PATH="$HOME/go/bin/:$PATH"
+  # Java
+  export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
+  # Ruby
+  export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+  export PATH="/opt/homebrew/lib/ruby/gems/3.4.0/bin:$PATH"
+  export LDFLAGS="-L/opt/homebrew/opt/ruby/lib"
+  export CPPFLAGS="-I/opt/homebrew/opt/ruby/include"
+  # Perl
+  eval "$(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib=$HOME/perl5)"
+fi
