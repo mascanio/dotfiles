@@ -1,0 +1,20 @@
+# vim: set ft=zsh:
+
+if [[ "$1" == "pre" ]]; then
+  eval "$(ssh-agent -s)"
+fi
+
+if [[ "$1" == "post" ]]; then
+  export FZF_BASE=/usr/share/fzf
+
+  # fnm
+  FNM_PATH="$HOME/.local/share/fnm"
+  if [ -d "$FNM_PATH" ]; then
+    export PATH="$FNM_PATH:$PATH"
+    eval "$(fnm env)"
+    eval "$(fnm env --use-on-cd --shell zsh)"
+  fi
+
+  export PATH=$PATH:/usr/local/go/bin
+  export PATH=$PATH:$HOME/go/bin
+fi
