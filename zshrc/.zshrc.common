@@ -79,9 +79,6 @@ alias la='eza -l --group-directories-first --icons=always -a'
 alias gdl='DELTA_FEATURES=+side-by-side gd'
 alias gdls='DELTA_FEATURES=+side-by-side gds'
 
-# Shell integrations
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
 # Cargo
 if [ -f "$HOME/.cargo/env" ]; then
   . "$HOME/.cargo/env"
@@ -95,6 +92,11 @@ if command -v zoxide &> /dev/null; then
   eval "$(zoxide init zsh)"
 fi
 
+# fzf before atuin
+if command -v fzf &> /dev/null; then
+  eval "$(fzf --zsh)"
+fi
+
 # atuin
 if command -v atuin &> /dev/null; then
   eval "$(atuin init zsh)"
@@ -102,3 +104,5 @@ fi
 
 # opencode
 export PATH=$HOME/.opencode/bin:$PATH
+
+export EZA_CONFIG_DIR=$XDG_CONFIG_HOME/eza
